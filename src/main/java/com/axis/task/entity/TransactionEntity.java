@@ -1,5 +1,6 @@
 package com.axis.task.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ import java.util.Date;
 public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private long id;
     private String transactionId;
     private String type;

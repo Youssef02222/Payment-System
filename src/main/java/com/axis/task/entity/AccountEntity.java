@@ -1,5 +1,6 @@
 package com.axis.task.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ import java.util.List;
 public class AccountEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private long id;
     private String accountId;
     private String name;
@@ -25,6 +27,7 @@ public class AccountEntity implements Serializable {
     private String email;
     private double balance;
     @OneToMany(mappedBy="accountDetails", cascade=CascadeType.ALL)
+    @JsonIgnore
     private List<TransactionEntity> transactions;
 
 }
