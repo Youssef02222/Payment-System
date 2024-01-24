@@ -1,6 +1,7 @@
 package com.axis.task.service.impl;
 
 import com.axis.task.entity.AccountEntity;
+import com.axis.task.exception.GeneralException;
 import com.axis.task.model.request.CreateAccountRequest;
 import com.axis.task.model.request.UpdateAccountRequest;
 import com.axis.task.model.response.CreateAccountResponse;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @Service
 public class AccountServiceImpl implements AccountService {
+    private static final String ACCOUNT_NOT_FOUND="there qas no account with found with id : ";
     @Autowired
     AccountRepository accountRepository;
     @Autowired
@@ -29,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
             accountEntity=accountRepository.save(accountEntity);
             return modelMapper.map(accountEntity,CreateAccountResponse.class);
         }catch (Exception e){
-            throw new RuntimeException("Error while creating account");
+            throw new GeneralException("Error while creating account");
         }
     }
 
@@ -37,10 +39,10 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(String accountId) throws AccountNotFoundException {
         try{
             accountRepository.deleteByAccountId(accountId);
-        } catch (RuntimeException e){
-            throw new AccountNotFoundException("there qas no account with id "+accountId+" found");
+        } catch (GeneralException e){
+            throw new AccountNotFoundException(ACCOUNT_NOT_FOUND+accountId);
         }catch (Exception e){
-            throw new RuntimeException("Error while deleting account");
+            throw new GeneralException("Error while deleting account");
         }
     }
 
@@ -53,11 +55,11 @@ public class AccountServiceImpl implements AccountService {
                accountEntity=accountRepository.save(accountEntity);
                return accountEntity;
            }else{
-                throw new AccountNotFoundException("there qas no account with id "+updateAccountRequest.getAccountId()+" found");
+                throw new AccountNotFoundException(ACCOUNT_NOT_FOUND+updateAccountRequest.getAccountId());
            }
 
        }catch (Exception e) {
-           throw new RuntimeException("Error while updating account");
+           throw new GeneralException("Error while updating account");
        }
     }
 
@@ -68,10 +70,10 @@ public class AccountServiceImpl implements AccountService {
             if (accountEntity != null) {
                 return accountEntity;
             } else {
-                throw new AccountNotFoundException("there qas no account with id " + accountId + " found");
+                throw new AccountNotFoundException(ACCOUNT_NOT_FOUND+accountId);
             }
         }catch (Exception e){
-            throw new RuntimeException("Error while getting account");
+            throw new GeneralException("Error while getting account");
         }
 
     }
@@ -83,10 +85,10 @@ public class AccountServiceImpl implements AccountService {
             if (accountEntity != null) {
                 return accountEntity.getBalance();
             } else {
-                throw new AccountNotFoundException("there qas no account with id " + accountId + " found");
+                throw new AccountNotFoundException(ACCOUNT_NOT_FOUND+accountId);
             }
         }catch (Exception e){
-            throw new RuntimeException("Error while getting account");
+            throw new GeneralException("Error while getting account");
         }
     }
 }
