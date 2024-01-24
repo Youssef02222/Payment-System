@@ -14,7 +14,7 @@ import java.util.List;
 
 @ControllerAdvice
 public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ValidationError validationError=new ValidationError();
         validationError.setUri(request.getDescription(false));
