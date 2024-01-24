@@ -28,13 +28,22 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {InsufficientBalanceException.class})
     public ResponseEntity<Object> handleUserServiceException(InsufficientBalanceException ex, WebRequest wr){
         GenericResponse<String> errorResponse=new GenericResponse<>(false,ex.getMessage(),null);
-        return new  ResponseEntity<>(errorResponse ,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new  ResponseEntity<>(errorResponse ,HttpStatus.OK);
     }
-
+    @ExceptionHandler(value = {AccountNotFoundException.class})
+    public ResponseEntity<Object> accountNotFoundException(AccountNotFoundException ex, WebRequest wr){
+        GenericResponse<String> errorResponse=new GenericResponse<>(false,ex.getMessage(),null);
+        return new  ResponseEntity<>(errorResponse ,HttpStatus.OK);
+    }
+    @ExceptionHandler(value = {GeneralException.class})
+    public ResponseEntity<Object> handleGeneralException(GeneralException ex, WebRequest request){
+        GenericResponse<String> errorResponse=new GenericResponse<>(false,ex.getMessage(),null);
+        return new  ResponseEntity<>(errorResponse ,HttpStatus.OK);
+    }
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleOtherException(Exception ex, WebRequest request){
         GenericResponse<String> errorResponse=new GenericResponse<>(false,ex.getMessage(),null);
-        return new  ResponseEntity<>(errorResponse ,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new  ResponseEntity<>(errorResponse ,HttpStatus.OK);
     }
 
 
