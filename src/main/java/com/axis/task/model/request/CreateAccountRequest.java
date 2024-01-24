@@ -17,4 +17,13 @@ public class CreateAccountRequest {
     private String email;
     @Pattern(regexp = "^01\\d{9}$", message = "Invalid phone number. It should start with '01' followed by 9 digits.")
     private String phone;
+
+    @Override
+    public String toString() {
+        return "CreateAccountRequest{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }

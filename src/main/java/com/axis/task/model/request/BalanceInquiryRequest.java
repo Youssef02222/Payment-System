@@ -9,4 +9,11 @@ import lombok.Data;
 @Builder
 public class BalanceInquiryRequest {
     private String accountId;
+
+    @Override
+    public String toString() {
+        return "BalanceInquiryRequest{" +
+                "accountId='" + accountId + '\'' +
+                '}';
+    }
 }
