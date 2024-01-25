@@ -28,5 +28,6 @@ public class TransactionEntity {
 
     @ManyToOne
     @JoinColumn(name="account_id")
+    @JsonIgnore
     private AccountEntity accountDetails;
 }
