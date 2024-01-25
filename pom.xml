@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.axis</groupId>
 	<artifactId>task</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>task</name>
 	<description>Demo payment system</description>
 	<properties>
@@ -82,6 +82,10 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<image>
+						<name>youssef02222/axis-task:1.0</name>
+					</image>
+					<pullPolicy>IF_NOT_PRESENT</pullPolicy>
 				</configuration>
 			</plugin>
 		</plugins>
