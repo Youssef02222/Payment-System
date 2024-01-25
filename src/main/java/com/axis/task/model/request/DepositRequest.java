@@ -9,7 +9,7 @@ import lombok.ToString;
 public class DepositRequest {
     @NotBlank(message = "account id is required")
     private String accountId;
-    @NotBlank(message = "amount is required")
+
     private Double amount;
 
 }
