@@ -33,7 +33,7 @@ public class AccountController {
     }
     @Operation(summary = "update account info")
     @PutMapping("/update-account")
-    public GenericResponse<AccountEntity> updateAccount(@RequestBody @Valid UpdateAccountRequest updateAccountRequest) {
+    public GenericResponse<AccountEntity> updateAccount(@RequestBody @Valid UpdateAccountRequest updateAccountRequest) throws AccountNotFoundException {
         return GenericResponse.<AccountEntity>builder().data(accountService.updateAccount(updateAccountRequest)).success(true).message(SUCCESS).build();
     }
     @Operation(summary = "delete Account permanently")
