@@ -7,6 +7,7 @@ import com.axis.task.model.request.UpdateAccountRequest;
 import com.axis.task.model.response.CreateAccountResponse;
 import com.axis.task.repository.AccountRepository;
 import com.axis.task.service.AccountService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void deleteAccount(String accountId) throws AccountNotFoundException {
         try{
             accountRepository.deleteByAccountId(accountId);
@@ -47,18 +49,23 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountEntity updateAccount(UpdateAccountRequest updateAccountRequest) {
+    public AccountEntity updateAccount(UpdateAccountRequest updateAccountRequest) throws AccountNotFoundException {
        try{
            AccountEntity accountEntity= accountRepository.findByAccountId(updateAccountRequest.getAccountId());
            if(accountEntity!=null){
-               accountEntity= modelMapper.map(updateAccountRequest,AccountEntity.class);
+                accountEntity.setName(updateAccountRequest.getName());
+                accountEntity.setEmail(updateAccountRequest.getEmail());
+                accountEntity.setPhone(updateAccountRequest.getPhone());
                accountEntity=accountRepository.save(accountEntity);
                return accountEntity;
            }else{
                 throw new AccountNotFoundException(ACCOUNT_NOT_FOUND+updateAccountRequest.getAccountId());
            }
 
-       }catch (Exception e) {
+       }catch (AccountNotFoundException e) {
+           throw new AccountNotFoundException(ACCOUNT_NOT_FOUND + updateAccountRequest.getAccountId());
+       }
+       catch (Exception e) {
            throw new GeneralException("Error while updating account");
        }
     }

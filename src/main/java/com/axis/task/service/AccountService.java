@@ -8,10 +8,10 @@ import com.axis.task.model.response.CreateAccountResponse;
 import javax.security.auth.login.AccountNotFoundException;
 
 public interface AccountService {
-    public CreateAccountResponse createAccount(CreateAccountRequest createAccountRequest);
-    public void deleteAccount(String accountId) throws AccountNotFoundException;
-    public AccountEntity updateAccount(UpdateAccountRequest updateAccountRequest);
-    public AccountEntity getAccount(String accountId);
+     CreateAccountResponse createAccount(CreateAccountRequest createAccountRequest);
+     void deleteAccount(String accountId) throws AccountNotFoundException;
+     AccountEntity updateAccount(UpdateAccountRequest updateAccountRequest) throws AccountNotFoundException;
+     AccountEntity getAccount(String accountId);
 
-    public Double getBalance(String accountId);
+     Double getBalance(String accountId);
 }
