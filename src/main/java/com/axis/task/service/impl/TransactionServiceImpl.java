@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -46,6 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
             }
             AccountEntity accountEntity=accountRepository.findByAccountId(depositRequest.getAccountId());
             TransactionEntity transactionEntity=new TransactionEntity();
+            transactionEntity.setTransactionId(UUID.randomUUID().toString());
             transactionEntity.setAccountDetails(accountEntity);
             transactionEntity.setAmount(depositRequest.getAmount());
             transactionEntity.setTransactionDate(new Date());
@@ -54,7 +56,9 @@ public class TransactionServiceImpl implements TransactionService {
             accountEntity.setBalance(accountEntity.getBalance()+depositRequest.getAmount());
             accountRepository.save(accountEntity);
             transactionEntity=transactionRepository.save(transactionEntity);
-            return modelMapper.map(transactionEntity,TransactionResponse.class);
+            TransactionResponse transactionResponse=modelMapper.map(transactionEntity,TransactionResponse.class);
+            transactionResponse.setCurrentBalance(accountEntity.getBalance());
+            return transactionResponse;
         }catch (Exception e) {
             throw new GeneralException("Error while depositing amount");
         }
@@ -80,7 +84,9 @@ public class TransactionServiceImpl implements TransactionService {
             accountEntity.setBalance(accountEntity.getBalance()-withdrawRequest.getAmount());
             accountRepository.save(accountEntity);
             transactionEntity=transactionRepository.save(transactionEntity);
-            return modelMapper.map(transactionEntity,TransactionResponse.class);
+            TransactionResponse transactionResponse=modelMapper.map(transactionEntity,TransactionResponse.class);
+            transactionResponse.setCurrentBalance(accountEntity.getBalance());
+            return transactionResponse;
         }catch (Exception e) {
             throw new GeneralException("Error while withdrawing amount");
         }

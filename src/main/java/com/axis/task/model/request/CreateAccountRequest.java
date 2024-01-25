@@ -14,6 +14,7 @@ public class CreateAccountRequest {
     @NotBlank(message = "Name is required")
     private String name;
     @Email(message = "Invalid email address")
+    @NotBlank(message = "Email is required")
     private String email;
     @Pattern(regexp = "^01\\d{9}$", message = "Invalid phone number. It should start with '01' followed by 9 digits.")
     private String phone;

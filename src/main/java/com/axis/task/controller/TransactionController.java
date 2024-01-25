@@ -8,10 +8,13 @@ import com.axis.task.model.response.TransactionResponse;
 import com.axis.task.service.AccountService;
 import com.axis.task.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Tag(name = "Transaction APIs", description = "Transaction management controller")
 public class TransactionController {
     private static final String SUCCESS = "SUCCESS";
     @Autowired
@@ -31,13 +34,13 @@ public class TransactionController {
 
     @Operation(summary = "deposit fund to account")
     @PostMapping("/deposit")
-    public GenericResponse<TransactionResponse> deposit(@RequestBody DepositRequest depositRequest) {
+    public GenericResponse<TransactionResponse> deposit(@RequestBody @Valid DepositRequest depositRequest) {
         return GenericResponse.<TransactionResponse>builder().data(transactionService.deposit(depositRequest)).success(true).message(SUCCESS).build();
     }
 
     @Operation(summary = "withdraw fund from account")
     @PostMapping("/withdraw")
-    public GenericResponse<TransactionResponse> withdraw(@RequestBody WithdrawRequest withdrawRequest) {
+    public GenericResponse<TransactionResponse> withdraw(@RequestBody @Valid WithdrawRequest withdrawRequest) {
         return GenericResponse.<TransactionResponse>builder().data(transactionService.withdraw(withdrawRequest)).success(true).message(SUCCESS).build();
     }
 

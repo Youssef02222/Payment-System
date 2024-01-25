@@ -3,7 +3,9 @@ package com.axis.task.exception;
 import com.axis.task.model.response.GenericResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,15 +16,17 @@ import java.util.List;
 
 @ControllerAdvice
 public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
-
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ValidationError validationError=new ValidationError();
-        validationError.setUri(request.getDescription(false));
-        List<FieldError> fieldErrorList=ex.getBindingResult().getFieldErrors();
-        for(FieldError f:fieldErrorList){
-            validationError.addError(f.getDefaultMessage());
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        BindingResult result = ex.getBindingResult();
+        ValidationError errorResponse = new ValidationError();
+        errorResponse.setUri(request.getDescription(false));
+        List<FieldError> fieldErrorList = result.getFieldErrors();
+        for (FieldError f : fieldErrorList) {
+            errorResponse.addError(f.getDefaultMessage());
         }
-        return new ResponseEntity<>(validationError,HttpStatus.BAD_REQUEST);
+        GenericResponse<ValidationError> errorResponseGenericResponse = new GenericResponse<>(false, "Validation Error", errorResponse);
+        return new ResponseEntity<>(errorResponseGenericResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {InsufficientBalanceException.class})
